@@ -1,0 +1,12 @@
+.drag-start {
+  opacity: 1;
+  background: #fffb00;
+}
+
+.drag-enter {
+  outline: 2px dashed green;
+}
+
+.hidden-item {
+  display: none;
+}

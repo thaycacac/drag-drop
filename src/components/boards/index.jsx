@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import Task from './task'
+import '../../styles.css'
 
 const WrapBoard = styled.div`
   margin: 0 4rem;
@@ -8,12 +9,35 @@ const WrapBoard = styled.div`
   overflow-x: scroll;
   .col {
     background: #dfe1e6;
-    margin: 0 1rem;
+    margin: 0.5rem 1rem;
     padding: 1rem;
     border-radius: 5px;
     width: 250px;
   }
 `
+
+const onDragEnter = (e) => {
+  const col = e.target.closest('.col')
+  col.classList.add('drag-enter')
+}
+
+
+const onDragStart = (e) => {
+  e.target.classList.add('drag-start');
+  e.persist()
+  setTimeout(() => {
+    e.target.classList.add('hidden-item')
+  }, 10)
+}
+
+const onDragLeave = (e) => {
+  if (e.target.classList.contains('col')) {
+    e.target.classList.remove("hover-border");
+  }
+}
+
+const onDrag = (e) => {
+}
 
 function Board () {
   const [boards, updateBoards] = useState([
@@ -40,15 +64,15 @@ function Board () {
       name: 'board 2',
       tasks: [
         {
-          id: 1,
+          id: 4,
           content: 'toi noi dong bao co nghe ro khong'
         },
         {
-          id: 2,
+          id: 5,
           content: 'trung voi dan hieu voi nuoc'
         },
         {
-          id: 3,
+          id: 6,
           content: 'hoc tap tot, lao dong tot, doan ket tot, ky luat tot, giu gin ve sinh that tot'
         }
       ]
@@ -58,15 +82,15 @@ function Board () {
       name: 'board 3',
       tasks: [
         {
-          id: 1,
+          id: 7,
           content: 'cong hoa xa hoi chu nghia viet nam doc lap tu do hanh phuc'
         },
         {
-          id: 2,
+          id: 8,
           content: 'yeu to quoc yeu dong dong bao khiem ton that tha dung cam'
         },
         {
-          id: 3,
+          id: 9,
           content: 'khong co gi quy hon doc lap tu do'
         }
       ]
@@ -76,11 +100,17 @@ function Board () {
     <WrapBoard>
       {
         boards.map((board, index) => (
-          <div className="col" key={index}>
+          <div
+            className="col"
+            key={index}
+            onDragLeave={(e) => onDragLeave(e)}
+            onDragEnter={(e) => onDragEnter(e)}
+            onDrag={(e) => onDrag(e)}
+          >
             {board.name}
             {
               board.tasks.map((task, index) => (
-                <Task task={task} />
+                <Task task={task} key={index} onDragStart={onDragStart}/>
               ))
             }
           </div>
