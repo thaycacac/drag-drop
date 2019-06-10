@@ -31,14 +31,39 @@ const onDragStart = (e) => {
 }
 
 const onDragLeave = (e) => {
-  if (e.target.classList.contains('col')) {
-    e.target.classList.remove("hover-border");
-  }
 }
 
 const onDrag = (e) => {
 }
 
+const onDragOver = (e) => {
+  const heightItem = e.target.offsetHeight
+  const positionItem = e.target.offsetTop
+  const itemCurrent = e.target
+  const col = e.target.closest('.col')
+
+  if (e.clientY <= positionItem + heightItem / 2
+    && e.clientY > positionItem - 4
+    && e.target.classList.contains('task')
+    && e.target.previousSibling.classList.contains('task')
+  ) {
+    // add to top
+    const newItem = document.createElement("p");
+    const textnode = document.createTextNode("Add to top");
+    newItem.appendChild(textnode);
+    col.insertBefore(newItem, itemCurrent)
+  } else if (e.clientY > positionItem + heightItem / 2
+    && e.clientY <= positionItem + heightItem + 4
+    && e.target.classList.contains('task')
+    && e.target.nextSibling.classList.contains('task')
+  ) {
+    // add to bottom
+    const newItem = document.createElement("p");
+    const textnode = document.createTextNode("Add to bottom");
+    newItem.appendChild(textnode);
+    col.insertAfter(newItem, itemCurrent)
+  }
+}
 function Board () {
   const [boards, updateBoards] = useState([
     {
@@ -105,6 +130,7 @@ function Board () {
             key={index}
             onDragLeave={(e) => onDragLeave(e)}
             onDragEnter={(e) => onDragEnter(e)}
+            onDragOver={(e) => onDragOver(e)}
             onDrag={(e) => onDrag(e)}
           >
             {board.name}

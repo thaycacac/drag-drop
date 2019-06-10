@@ -14,6 +14,7 @@ const WrapTask = styled.div`
 function Task ({ task, onDragStart }) {
   return (
     <WrapTask
+      className="task"
       draggable="true"
       id={task.id}
       onDragStart={(e) => onDragStart(e)}
