@@ -1,6 +1,8 @@
 {
   "name": "cullo",
   "version": "0.1.0",
+  "author": "HoaPn <thaycacac@gmail.com>",
+  "description": "Flowers will bloom sunny enough Enough love will fill your happiness",
   "private": true,
   "dependencies": {
     "react": "^16.8.6",
