@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import Task from './task'
+import Demo from './demo'
 import '../../styles.css'
 
 const WrapBoard = styled.div`
@@ -131,14 +132,36 @@ function Board () {
   }
 
   const onDrop = (e) => {
-    _demoItem.classList.remove('demo-task')
-    _demoItem.classList.add('task')
+    e.preventDefault()
+    const indexListTarget = e.target.closest('.col').dataset.list
+    _demoItem.remove()
     const indexTask = e.dataTransfer.getData('indexTask')
     const indexList = e.dataTransfer.getData('indexList')
+
+    const listTaskOld = boards.slice(indexList, indexList + 1)[0]
+
+    const itemChoose = listTaskOld.tasks.filter((task, index) => {
+      return index === parseInt(indexTask)
+    })
+    const updateListTaskOld = listTaskOld.tasks.filter((task, index) => {
+      return index !== parseInt(indexTask)
+    })
+
+    const updateListBoardOld = {
+      id: listTaskOld.id,
+      name: listTaskOld.name,
+      tasks: updateListTaskOld
+    }
+
+    boards[indexList] = updateListBoardOld
+    boards[indexListTarget].tasks.push(itemChoose[0])
+
+    updateBoards(boards)
   }
 
   return (
     <WrapBoard>
+      <Demo board={boards} />
       {
         boards.map((board, index) => (
           <div
