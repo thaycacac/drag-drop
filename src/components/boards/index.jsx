@@ -15,6 +15,10 @@ const WrapBoard = styled.div`
     width: 250px;
   }
 `
+// node demo
+const _demoItem = document.createElement('div')
+_demoItem.classList.add('demo')
+let _textDemo = ''
 
 const onDragEnter = (e) => {
   const col = e.target.closest('.col')
@@ -23,6 +27,7 @@ const onDragEnter = (e) => {
 
 
 const onDragStart = (e) => {
+  _textDemo = e.target.innerHTML
   e.target.classList.add('drag-start');
   e.persist()
   setTimeout(() => {
@@ -37,33 +42,21 @@ const onDrag = (e) => {
 }
 
 const onDragOver = (e) => {
-  const heightItem = e.target.offsetHeight
-  const positionItem = e.target.offsetTop
-  const itemCurrent = e.target
-  const col = e.target.closest('.col')
-
-  if (e.clientY <= positionItem + heightItem / 2
-    && e.clientY > positionItem - 4
-    && e.target.classList.contains('task')
-    && e.target.previousSibling.classList.contains('task')
-  ) {
-    // add to top
-    const newItem = document.createElement("p");
-    const textnode = document.createTextNode("Add to top");
-    newItem.appendChild(textnode);
-    col.insertBefore(newItem, itemCurrent)
-  } else if (e.clientY > positionItem + heightItem / 2
-    && e.clientY <= positionItem + heightItem + 4
-    && e.target.classList.contains('task')
-    && e.target.nextSibling.classList.contains('task')
-  ) {
-    // add to bottom
-    const newItem = document.createElement("p");
-    const textnode = document.createTextNode("Add to bottom");
-    newItem.appendChild(textnode);
-    col.insertAfter(newItem, itemCurrent)
+  const nearItem = e.target.closest('.task')
+  if (nearItem) {
+    const position = nearItem.getBoundingClientRect()
+    if (e.clientY <= position.top + position.height / 2
+    ) {
+      nearItem.parentNode.insertBefore(_demoItem, nearItem)
+      setInterval(() => {
+        _demoItem.innerHTML = _textDemo
+      }, 10)
+    } else if (e.clientY > position.bottom - position.height / 2) {
+      nearItem.parentNode.insertBefore(_demoItem, nearItem.nextSibling)
+    }
   }
 }
+
 function Board () {
   const [boards, updateBoards] = useState([
     {
