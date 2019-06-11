@@ -11,12 +11,12 @@ const WrapTask = styled.div`
   cursor: pointer;
 `
 
-function Task ({ task, onDragStart }) {
+function Task ({ task, index, onDragStart }) {
   return (
     <WrapTask
       className="task"
       draggable="true"
-      id={task.id}
+      id={index}
       onDragStart={(e) => onDragStart(e)}
     >{task.content}</WrapTask>
   )

@@ -15,47 +15,6 @@ const WrapBoard = styled.div`
     width: 250px;
   }
 `
-// node demo
-const _demoItem = document.createElement('div')
-_demoItem.classList.add('demo')
-let _textDemo = ''
-
-const onDragEnter = (e) => {
-  const col = e.target.closest('.col')
-  col.classList.add('drag-enter')
-}
-
-
-const onDragStart = (e) => {
-  _textDemo = e.target.innerHTML
-  e.target.classList.add('drag-start');
-  e.persist()
-  setTimeout(() => {
-    e.target.classList.add('hidden-item')
-  }, 10)
-}
-
-const onDragLeave = (e) => {
-}
-
-const onDrag = (e) => {
-}
-
-const onDragOver = (e) => {
-  const nearItem = e.target.closest('.task')
-  if (nearItem) {
-    const position = nearItem.getBoundingClientRect()
-    if (e.clientY <= position.top + position.height / 2
-    ) {
-      nearItem.parentNode.insertBefore(_demoItem, nearItem)
-      setInterval(() => {
-        _demoItem.innerHTML = _textDemo
-      }, 10)
-    } else if (e.clientY > position.bottom - position.height / 2) {
-      nearItem.parentNode.insertBefore(_demoItem, nearItem.nextSibling)
-    }
-  }
-}
 
 function Board () {
   const [boards, updateBoards] = useState([
@@ -114,22 +73,92 @@ function Board () {
       ]
     }
   ])
+  
+  // node demo
+  const _demoItem = document.createElement('div')
+  _demoItem.classList.add('demo-task')
+  let _textDemo = ''
+  let _columnCurrent = -1
+  
+  const onDragStart = (e) => {
+    _textDemo = e.target.innerHTML
+    e.target.classList.add('drag-start')
+
+    const indexTask = e.target.id
+    const indexList = e.target.parentNode.dataset.list
+    e.dataTransfer.setData('indexTask', indexTask)
+    e.dataTransfer.setData('indexList', indexList)
+
+    e.persist()
+    setTimeout(() => {
+      e.target.classList.add('hidden-item')
+    }, 10)
+  }
+
+  const onDragEnter = (e) => {
+    const col = e.target.closest('.col')
+    col.classList.add('drag-enter')
+    _columnCurrent = col.id
+  }
+  
+  const onDragLeave = (e) => {
+    const col = e.target.closest('.col')
+    if (col.id !== _columnCurrent) {
+      col.classList.remove('drag-enter')
+      _columnCurrent = -1
+    }
+  }
+
+  const onDragOver = (e) => {
+    // allow drop
+    e.preventDefault()
+    const nearItem = e.target.closest('.task')
+    if (nearItem) {
+      const position = nearItem.getBoundingClientRect()
+      if (e.clientY <= position.top + position.height / 2) {
+        nearItem.parentNode.insertBefore(_demoItem, nearItem)
+        // inser text demo
+        setInterval(() => {
+          _demoItem.innerHTML = _textDemo
+        }, 10)
+      } else if (e.clientY > position.bottom - position.height / 2) {
+        nearItem.parentNode.insertBefore(_demoItem, nearItem.nextSibling)
+        setInterval(() => {
+          _demoItem.innerHTML = _textDemo
+        }, 10)
+      }
+    }
+  }
+
+  const onDrop = (e) => {
+    _demoItem.classList.remove('demo-task')
+    _demoItem.classList.add('task')
+    const indexTask = e.dataTransfer.getData('indexTask')
+    const indexList = e.dataTransfer.getData('indexList')
+  }
+
   return (
     <WrapBoard>
       {
         boards.map((board, index) => (
           <div
             className="col"
+            data-list={index}
             key={index}
             onDragLeave={(e) => onDragLeave(e)}
             onDragEnter={(e) => onDragEnter(e)}
             onDragOver={(e) => onDragOver(e)}
-            onDrag={(e) => onDrag(e)}
+            onDrop={(e) => onDrop(e)}
           >
             {board.name}
             {
               board.tasks.map((task, index) => (
-                <Task task={task} key={index} onDragStart={onDragStart}/>
+                <Task
+                  task={task}
+                  key={index}
+                  index={index}
+                  onDragStart={onDragStart} 
+                />
               ))
             }
           </div>
