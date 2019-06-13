@@ -134,7 +134,8 @@ function Board () {
   const onDrop = (e) => {
     e.preventDefault()
     const indexListTarget = e.target.closest('.col').dataset.list
-    _demoItem.remove()
+    _demoItem.classList.remove('demo-task')
+    _demoItem.classList.add('task')
     const indexTask = e.dataTransfer.getData('indexTask')
     const indexList = e.dataTransfer.getData('indexList')
 
