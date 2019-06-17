@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import Task from './task'
-import Demo from './demo'
 import '../../styles.css'
 
 const WrapBoard = styled.div`
@@ -17,71 +16,77 @@ const WrapBoard = styled.div`
   }
 `
 
-function Board () {
-  const [boards, updateBoards] = useState([
-    {
-      id: 1,
-      name: 'board 1',
-      tasks: [
-        {
+// node demo
+const _demoItem = document.createElement('div')
+_demoItem.classList.add('demo-task')
+let _textDemo = ''
+let _columnCurrent = -1
+
+class Board extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      boards: [
+        { 
           id: 1,
-          content: 'cong hoa xa hoi chu nghia viet nam'
+          name: 'board 1',
+          tasks: [
+            {
+              id: 1,
+              content: 'cong hoa xa hoi chu nghia viet nam'
+            },
+            {
+              id: 2,
+              content: 'doc lap tu do hanh phuc'
+            },
+            {
+              id: 3,
+              content: 'tha mat nuoc chu khong chiu mat dat'
+            }
+          ]
         },
         {
           id: 2,
-          content: 'doc lap tu do hanh phuc'
+          name: 'board 2',
+          tasks: [
+            {
+              id: 4,
+              content: 'toi noi dong bao co nghe ro khong'
+            },
+            {
+              id: 5,
+              content: 'trung voi dan hieu voi nuoc'
+            },
+            {
+              id: 6,
+              content: 'hoc tap tot, lao dong tot, doan ket tot, ky luat tot, giu gin ve sinh that tot'
+            }
+          ]
         },
         {
           id: 3,
-          content: 'tha mat nuoc chu khong chiu mat dat'
-        }
-      ]
-    },
-    {
-      id: 2,
-      name: 'board 2',
-      tasks: [
-        {
-          id: 4,
-          content: 'toi noi dong bao co nghe ro khong'
-        },
-        {
-          id: 5,
-          content: 'trung voi dan hieu voi nuoc'
-        },
-        {
-          id: 6,
-          content: 'hoc tap tot, lao dong tot, doan ket tot, ky luat tot, giu gin ve sinh that tot'
-        }
-      ]
-    },
-    {
-      id: 3,
-      name: 'board 3',
-      tasks: [
-        {
-          id: 7,
-          content: 'cong hoa xa hoi chu nghia viet nam doc lap tu do hanh phuc'
-        },
-        {
-          id: 8,
-          content: 'yeu to quoc yeu dong dong bao khiem ton that tha dung cam'
-        },
-        {
-          id: 9,
-          content: 'khong co gi quy hon doc lap tu do'
+          name: 'board 3',
+          tasks: [
+            {
+              id: 7,
+              content: 'cong hoa xa hoi chu nghia viet nam doc lap tu do hanh phuc'
+            },
+            {
+              id: 8,
+              content: 'yeu to quoc yeu dong dong bao khiem ton that tha dung cam'
+            },
+            {
+              id: 9,
+              content: 'khong co gi quy hon doc lap tu do'
+            }
+          ]
         }
       ]
     }
-  ])
+  }
   
-  // node demo
-  const _demoItem = document.createElement('div')
-  _demoItem.classList.add('demo-task')
-  let _textDemo = ''
-  let _columnCurrent = -1
-  
-  const onDragStart = (e) => {
+  onDragStart = (e) => {
     _textDemo = e.target.innerHTML
     e.target.classList.add('drag-start')
 
@@ -96,13 +101,13 @@ function Board () {
     }, 10)
   }
 
-  const onDragEnter = (e) => {
+  onDragEnter = (e) => {
     const col = e.target.closest('.col')
     col.classList.add('drag-enter')
     _columnCurrent = col.id
   }
   
-  const onDragLeave = (e) => {
+  onDragLeave = (e) => {
     const col = e.target.closest('.col')
     if (col.id !== _columnCurrent) {
       col.classList.remove('drag-enter')
@@ -110,7 +115,7 @@ function Board () {
     }
   }
 
-  const onDragOver = (e) => {
+  onDragOver = (e) => {
     // allow drop
     e.preventDefault()
     const nearItem = e.target.closest('.task')
@@ -119,77 +124,70 @@ function Board () {
       if (e.clientY <= position.top + position.height / 2) {
         nearItem.parentNode.insertBefore(_demoItem, nearItem)
         // inser text demo
-        setInterval(() => {
+        const insertDom = setInterval(() => {
           _demoItem.innerHTML = _textDemo
+          clearInterval(insertDom)
         }, 10)
       } else if (e.clientY > position.bottom - position.height / 2) {
         nearItem.parentNode.insertBefore(_demoItem, nearItem.nextSibling)
-        setInterval(() => {
+        const insertDom = setInterval(() => {
           _demoItem.innerHTML = _textDemo
+          clearInterval(insertDom)
         }, 10)
       }
     }
   }
 
-  const onDrop = (e) => {
+  onDrop = (e) => {
     e.preventDefault()
     const indexListTarget = e.target.closest('.col').dataset.list
-    _demoItem.classList.remove('demo-task')
-    _demoItem.classList.add('task')
+    // _demoItem.classList.remove('demo-task')
+    // _demoItem.classList.add('task')
     const indexTask = e.dataTransfer.getData('indexTask')
     const indexList = e.dataTransfer.getData('indexList')
 
-    const listTaskOld = boards.slice(indexList, indexList + 1)[0]
+    const taskPicked = this.state.boards[indexList].tasks[indexTask]
+    const boardsOld = this.state.boards
 
-    const itemChoose = listTaskOld.tasks.filter((task, index) => {
-      return index === parseInt(indexTask)
+    boardsOld[indexListTarget].tasks.push(taskPicked)
+    boardsOld[indexList].tasks.splice(indexTask, 1)
+
+    this.setState({
+      boards: boardsOld
     })
-    const updateListTaskOld = listTaskOld.tasks.filter((task, index) => {
-      return index !== parseInt(indexTask)
-    })
-
-    const updateListBoardOld = {
-      id: listTaskOld.id,
-      name: listTaskOld.name,
-      tasks: updateListTaskOld
-    }
-
-    boards[indexList] = updateListBoardOld
-    boards[indexListTarget].tasks.push(itemChoose[0])
-
-    updateBoards(boards)
   }
 
-  return (
-    <WrapBoard>
-      <Demo board={boards} />
-      {
-        boards.map((board, index) => (
-          <div
-            className="col"
-            data-list={index}
-            key={index}
-            onDragLeave={(e) => onDragLeave(e)}
-            onDragEnter={(e) => onDragEnter(e)}
-            onDragOver={(e) => onDragOver(e)}
-            onDrop={(e) => onDrop(e)}
-          >
-            {board.name}
-            {
-              board.tasks.map((task, index) => (
-                <Task
-                  task={task}
-                  key={index}
-                  index={index}
-                  onDragStart={onDragStart} 
-                />
-              ))
-            }
-          </div>
-        ))
-      }
-    </WrapBoard>
-  )
+  render() {
+    return (
+      <WrapBoard>
+        {
+          this.state.boards.map((board, index) => (
+            <div
+              className="col"
+              data-list={index}
+              key={index}
+              onDragLeave={(e) => this.onDragLeave(e)}
+              onDragEnter={(e) => this.onDragEnter(e)}
+              onDragOver={(e) => this.onDragOver(e)}
+              onDrop={(e) => this.onDrop(e)}
+            >
+              {board.name}
+              {
+                board.tasks.map((task, index) => (
+                  <Task
+                    task={task}
+                    key={index}
+                    index={index}
+                    onDragStart={this.onDragStart} 
+                  />
+                ))
+              }
+            </div>
+          ))
+        }
+      </WrapBoard>
+    )
+  }
 }
 
 export default Board
