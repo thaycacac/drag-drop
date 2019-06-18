@@ -22,6 +22,9 @@ _demoItem.classList.add('demo-task')
 let _textDemo = ''
 let _columnCurrent = -1
 
+// index to insert
+let _indexInsert = -1
+
 class Board extends React.Component {
 
   constructor(props) {
@@ -123,6 +126,7 @@ class Board extends React.Component {
       const position = nearItem.getBoundingClientRect()
       if (e.clientY <= position.top + position.height / 2) {
         nearItem.parentNode.insertBefore(_demoItem, nearItem)
+        _indexInsert = parseInt(nearItem.id)
         // inser text demo
         const insertDom = setInterval(() => {
           _demoItem.innerHTML = _textDemo
@@ -130,6 +134,7 @@ class Board extends React.Component {
         }, 10)
       } else if (e.clientY > position.bottom - position.height / 2) {
         nearItem.parentNode.insertBefore(_demoItem, nearItem.nextSibling)
+        _indexInsert = parseInt(nearItem.id) + 1;
         const insertDom = setInterval(() => {
           _demoItem.innerHTML = _textDemo
           clearInterval(insertDom)
@@ -141,20 +146,23 @@ class Board extends React.Component {
   onDrop = (e) => {
     e.preventDefault()
     const indexListTarget = e.target.closest('.col').dataset.list
-    // _demoItem.classList.remove('demo-task')
-    // _demoItem.classList.add('task')
+    _demoItem.parentNode.removeChild(_demoItem)
     const indexTask = e.dataTransfer.getData('indexTask')
     const indexList = e.dataTransfer.getData('indexList')
 
     const taskPicked = this.state.boards[indexList].tasks[indexTask]
     const boardsOld = this.state.boards
-
-    boardsOld[indexListTarget].tasks.push(taskPicked)
-    boardsOld[indexList].tasks.splice(indexTask, 1)
+    
+    boardsOld[indexListTarget].tasks.splice(_indexInsert, 0, taskPicked)
+    boardsOld[indexList].tasks.splice(indexTask, 0)
 
     this.setState({
       boards: boardsOld
     })
+  }
+
+  componentDidUpdate () {
+    console.log('updated');
   }
 
   render() {
@@ -178,7 +186,7 @@ class Board extends React.Component {
                     task={task}
                     key={index}
                     index={index}
-                    onDragStart={this.onDragStart} 
+                    onDragStart={this.onDragStart}
                   />
                 ))
               }
