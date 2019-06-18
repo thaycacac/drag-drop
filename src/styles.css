@@ -3,6 +3,14 @@
   background: #fffb00;
 }
 
+.title-board {
+  font-weight: bold;
+  margin: 0 0 10px 0;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
 .border-board {
   outline: 2px dashed green;
 }
@@ -30,4 +38,13 @@
   color: #172b4d;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   cursor: pointer;
+}
+
+.add-board {
+  background: #dfe1e66b;
+  margin: 0.5rem 1rem;
+  padding: 1rem;
+  border-radius: 5px;
+  width: 250px;
+  height: 20px;
 }

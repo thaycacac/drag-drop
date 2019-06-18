@@ -31,7 +31,7 @@ class Board extends React.Component {
       boards: [
         { 
           id: 1,
-          name: 'board 1',
+          name: 'Board 1',
           tasks: [
             {
               id: 1,
@@ -49,7 +49,7 @@ class Board extends React.Component {
         },
         {
           id: 2,
-          name: 'board 2',
+          name: 'Board 2',
           tasks: [
             {
               id: 4,
@@ -67,7 +67,7 @@ class Board extends React.Component {
         },
         {
           id: 3,
-          name: 'board 3',
+          name: 'Board 3',
           tasks: [
             {
               id: 7,
@@ -158,38 +158,45 @@ class Board extends React.Component {
     })
   }
 
-  componentDidUpdate () {
-    console.log('updated');
+  renderListBoards = () => {
+    return(
+      this.state.boards.map((board, index) => (
+        <div
+          className="col"
+          data-list={index}
+          key={index}æ
+          onDragOver={(e) => this.onDragOver(e)}
+          onDrop={(e) => this.onDrop(e)}
+        >
+          <p className="title-board">{board.name}</p>
+          {
+            board.tasks.map((task, index) => (
+              <Task
+                task={task}
+                key={index}
+                index={index}
+                onDragStart={this.onDragStart}
+              />
+            ))
+          }
+        </div>
+      ))
+    )
+  }
+
+  renderAddBoard = () => {
+    return (
+      <div className="add-board">
+        Add board
+      </div>
+    )
   }
 
   render() {
     return (
       <WrapBoard>
-        {
-          this.state.boards.map((board, index) => (
-            <div
-              className="col"
-              data-list={index}
-              key={index}
-              onDragLeave={(e) => this.onDragLeave(e)}
-              onDragEnter={(e) => this.onDragEnter(e)}
-              onDragOver={(e) => this.onDragOver(e)}
-              onDrop={(e) => this.onDrop(e)}
-            >
-              {board.name}
-              {
-                board.tasks.map((task, index) => (
-                  <Task
-                    task={task}
-                    key={index}
-                    index={index}
-                    onDragStart={this.onDragStart}
-                  />
-                ))
-              }
-            </div>
-          ))
-        }
+        {this.renderListBoards()}
+        {this.renderAddBoard()}
       </WrapBoard>
     )
   }
