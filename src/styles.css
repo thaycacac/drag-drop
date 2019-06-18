@@ -3,7 +3,7 @@
   background: #fffb00;
 }
 
-.drag-enter {
+.border-board {
   outline: 2px dashed green;
 }
 

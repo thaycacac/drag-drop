@@ -20,8 +20,6 @@ const WrapBoard = styled.div`
 const _demoItem = document.createElement('div')
 _demoItem.classList.add('demo-task')
 let _textDemo = ''
-let _columnCurrent = -1
-
 // index to insert
 let _indexInsert = -1
 
@@ -104,23 +102,21 @@ class Board extends React.Component {
     }, 10)
   }
 
-  onDragEnter = (e) => {
-    const col = e.target.closest('.col')
-    col.classList.add('drag-enter')
-    _columnCurrent = col.id
-  }
-  
-  onDragLeave = (e) => {
-    const col = e.target.closest('.col')
-    if (col.id !== _columnCurrent) {
-      col.classList.remove('drag-enter')
-      _columnCurrent = -1
+  removeBorderBoard = () => {
+    const boardHoverOld = document.getElementsByClassName('border-board')[0]
+    if (boardHoverOld) {
+      boardHoverOld.classList.remove('border-board')
     }
   }
 
   onDragOver = (e) => {
     // allow drop
     e.preventDefault()
+    this.removeBorderBoard()
+    const col = e.target.closest('.col')
+    col.classList.add('border-board')
+    
+
     const nearItem = e.target.closest('.task')
     if (nearItem) {
       const position = nearItem.getBoundingClientRect()
@@ -145,6 +141,7 @@ class Board extends React.Component {
 
   onDrop = (e) => {
     e.preventDefault()
+    this.removeBorderBoard()
     const indexListTarget = e.target.closest('.col').dataset.list
     _demoItem.parentNode.removeChild(_demoItem)
     const indexTask = e.dataTransfer.getData('indexTask')
