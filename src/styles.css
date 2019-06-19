@@ -2,6 +2,13 @@
   font-family: 'Indie Flower', cursive;
 }
 
+body {
+  margin: 0;
+  background-image: url('/images//bg.png');
+  background-repeat: no-repeat;
+  background-position: right;
+}
+
 .drag-start {
   opacity: 1;
   background: #fffb00;

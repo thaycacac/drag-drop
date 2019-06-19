@@ -1,24 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
-import Task from './task'
+import Task from '../tasks/task'
+import AddTask from '../tasks/add-task'
 import '../../styles.css'
-
-const WrapBoard = styled.div`
-  margin: 0 4rem;
-  display: flex;
-  overflow-x: scroll;
-`
-
-const WrapColumn = styled.div`
-  background: #dfe1e6;
-  margin: 0.5rem 1rem;
-  padding: 1rem;
-  border-radius: 5px;
-  width: 250px;
-  background-image: ${props => `url(../../images/bg-${props.bgImg}.png)`};
-  background-size: cover;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-`
 
 // node demo
 const _demoItem = document.createElement('div')
@@ -184,6 +168,7 @@ class Board extends React.Component {
               />
             ))
           }
+          <AddTask />
         </WrapColumn>
       ))
     )
@@ -206,5 +191,22 @@ class Board extends React.Component {
     )
   }
 }
+
+const WrapBoard = styled.div`
+  margin: 0 4rem;
+  display: flex;
+  overflow-x: scroll;
+`
+
+const WrapColumn = styled.div`
+  background: #dfe1e6;
+  margin: 0.5rem 1rem;
+  padding: 1rem;
+  border-radius: 5px;
+  width: 250px;
+  background-image: ${props => `url(../../images/bg-${props.bgImg}.png)`};
+  background-size: cover;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+`
 
 export default Board
