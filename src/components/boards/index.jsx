@@ -15,7 +15,7 @@ const WrapColumn = styled.div`
   padding: 1rem;
   border-radius: 5px;
   width: 250px;
-  background-image: url('../../images/bg-1.png');
+  background-image: ${props => `url(../../images/bg-${props.bgImg}.png)`};
   background-size: cover;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 `
@@ -166,10 +166,10 @@ class Board extends React.Component {
     return(
       this.state.boards.map((board, index) => (
         <WrapColumn
-          bgColor={index}
+          bgImg={index}
           className="col"
           data-list={index}
-          key={index}æ
+          key={index}
           onDragOver={(e) => this.onDragOver(e)}
           onDrop={(e) => this.onDrop(e)}
         >
