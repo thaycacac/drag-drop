@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { TButton } from '../common/'
 
-function AddTask () {
+function AddTask ({ addTask }) {
   const [newTask, updateNewTask] = useState('')
   const [isAdd, updateIsAdd] = useState(false)
 
@@ -10,20 +10,24 @@ function AddTask () {
     updateIsAdd(!isAdd)
   }
 
-  const addTask = (event) => {
+  const addMoreTask = (event) => {
     event.preventDefault();
-    console.log('abcde');
+    const col = event.target.closest('.col')
+    addTask({
+      indexColumn: col.dataset.list,
+      content: newTask
+    })
   }
 
   return (
     !isAdd ? (
       <WrapButtonAdd onClick={() => showAdd()}>
-        <i class="fas fa-plus-circle" />
+        <i className="fas fa-plus-circle" />
         Addtask
       </WrapButtonAdd>
     ) : (
         <WrapForm
-        onSubmit={(event) => addTask(event)}>
+        onSubmit={(event) => addMoreTask(event)}>
         <textarea
           className="input-card"
           cols="35"
@@ -33,7 +37,7 @@ function AddTask () {
           />
           <div className="wrap-button">
             <TButton primary>Add Card</TButton>
-            <i class="far fa-times-circle icon"
+            <i className="far fa-times-circle icon"
               onClick={() => showAdd()} />
           </div>
       </WrapForm>

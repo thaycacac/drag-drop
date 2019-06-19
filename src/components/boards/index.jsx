@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import Task from '../tasks/task'
 import AddTask from '../tasks/add-task'
+import { getRandomInt } from '../../utils'
 import '../../styles.css'
 
 // node demo
@@ -168,7 +169,7 @@ class Board extends React.Component {
               />
             ))
           }
-          <AddTask />
+          <AddTask addTask={({ indexColumn, content }) => this.addTask({ indexColumn, content })}/>
         </WrapColumn>
       ))
     )
@@ -180,6 +181,13 @@ class Board extends React.Component {
         Add board
       </div>
     )
+  }
+
+  addTask = ({ indexColumn, content }) => {
+    this.state.boards[indexColumn].tasks.push({
+      id: getRandomInt(1000),
+      content: content
+    })
   }
 
   render() {
