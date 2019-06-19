@@ -1,3 +1,7 @@
+* {
+  font-family: 'Indie Flower', cursive;
+}
+
 .drag-start {
   opacity: 1;
   background: #fffb00;
@@ -9,6 +13,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
+  text-decoration: underline;
 }
 
 .border-board {

@@ -7,13 +7,17 @@ const WrapBoard = styled.div`
   margin: 0 4rem;
   display: flex;
   overflow-x: scroll;
-  .col {
-    background: #dfe1e6;
-    margin: 0.5rem 1rem;
-    padding: 1rem;
-    border-radius: 5px;
-    width: 250px;
-  }
+`
+
+const WrapColumn = styled.div`
+  background: #dfe1e6;
+  margin: 0.5rem 1rem;
+  padding: 1rem;
+  border-radius: 5px;
+  width: 250px;
+  background-image: url('../../images/bg-1.png');
+  background-size: cover;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 `
 
 // node demo
@@ -161,7 +165,8 @@ class Board extends React.Component {
   renderListBoards = () => {
     return(
       this.state.boards.map((board, index) => (
-        <div
+        <WrapColumn
+          bgColor={index}
           className="col"
           data-list={index}
           key={index}æ
@@ -179,7 +184,7 @@ class Board extends React.Component {
               />
             ))
           }
-        </div>
+        </WrapColumn>
       ))
     )
   }
