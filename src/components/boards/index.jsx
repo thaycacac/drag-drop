@@ -137,13 +137,16 @@ class Board extends React.Component {
     const indexList = e.dataTransfer.getData('indexList')
 
     const taskPicked = this.state.boards[indexList].tasks[indexTask]
-    const boardsOld = this.state.boards
     
-    boardsOld[indexListTarget].tasks.splice(_indexInsert, 0, taskPicked)
-    boardsOld[indexList].tasks.splice(indexTask, 0)
+    this.state.boards[indexListTarget].tasks.splice(_indexInsert, 0, taskPicked)
+    this.state.boards[indexList].tasks.splice(indexTask, 0)
 
+    this.updateBoard(this.state.boards)
+  }
+
+  updateBoard = data => {
     this.setState({
-      boards: boardsOld
+      boards: data
     })
   }
 
@@ -188,6 +191,7 @@ class Board extends React.Component {
       id: getRandomInt(1000),
       content: content
     })
+    this.updateBoard(this.state.boards)
   }
 
   render() {

@@ -12,7 +12,7 @@ const TButton = styled.button`
   };
   &:focus {
     outline: none;
-    background-image: linear-gradient(to right, #2BC0E4 0%, #f00 51%, #2BC0E4 100%);
+    background-image: linear-gradient(to right, #2BC0E4 0%, #15ECD2 51%, #2BC0E4 100%);
   }
 `;
 

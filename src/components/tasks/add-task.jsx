@@ -17,21 +17,22 @@ function AddTask ({ addTask }) {
       indexColumn: col.dataset.list,
       content: newTask
     })
+    updateNewTask('')
+    updateIsAdd(false)
   }
 
   return (
     !isAdd ? (
       <WrapButtonAdd onClick={() => showAdd()}>
-        <i className="fas fa-plus-circle" />
-        Addtask
+        <i className="fas fa-plus-circle icon" />
+        Add Card
       </WrapButtonAdd>
     ) : (
         <WrapForm
         onSubmit={(event) => addMoreTask(event)}>
-        <textarea
+        <input
           className="input-card"
-          cols="35"
-          rows="4"
+          type="text"
           placeholder="Enter a title for this card..."
           onChange={(event) => updateNewTask(event.target.value)}
           />
@@ -55,6 +56,9 @@ const WrapButtonAdd = styled.div`
     text-decoration: underline;
     cursor: pointer;
   }
+  .icon {
+    margin-right: 5px;
+  }
 `
 
 const WrapForm = styled.form`
@@ -62,10 +66,12 @@ const WrapForm = styled.form`
     border: none;
     resize: none;
     font-size: 0.8rem;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
     border-radius: 5px;
     padding: 10px;
+    height: 40px;
+    width: 225px;
+    margin-bottom: 10px;
+    vertical-align: text-top;
     &:focus {
       outline:none;
     }
