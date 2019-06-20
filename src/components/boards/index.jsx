@@ -1,8 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 import { NotificationContainer } from 'react-notifications'
-import Task from '../tasks/task'
-import AddTask from '../tasks/add-task'
+import Card from '../cards/card'
+import AddCard from '../cards/add-card'
+import AddBoard from '../boards/add-board'
 import { getRandomInt } from '../../utils'
 import '../../styles.css'
 
@@ -20,7 +21,7 @@ class Board extends React.Component {
     this.state = {
       boards: [
         { 
-          id: 1,
+          id: 0,
           name: 'Board 1',
           tasks: [
             {
@@ -38,7 +39,7 @@ class Board extends React.Component {
           ]
         },
         {
-          id: 2,
+          id: 1,
           name: 'Board 2',
           tasks: [
             {
@@ -56,7 +57,7 @@ class Board extends React.Component {
           ]
         },
         {
-          id: 3,
+          id: 2,
           name: 'Board 3',
           tasks: [
             {
@@ -165,7 +166,7 @@ class Board extends React.Component {
           <p className="title-board">{board.name}</p>
           {
             board.tasks.map((task, index) => (
-              <Task
+              <Card
                 task={task}
                 key={index}
                 index={index}
@@ -173,24 +174,25 @@ class Board extends React.Component {
               />
             ))
           }
-          <AddTask addTask={({ indexColumn, content }) => this.addTask({ indexColumn, content })}/>
+          <AddCard addCard={({ indexColumn, content }) => this.addCard({ indexColumn, content })}/>
         </WrapColumn>
       ))
     )
   }
 
-  renderAddBoard = () => {
-    return (
-      <div className="add-board">
-        Add board
-      </div>
-    )
-  }
-
-  addTask = ({ indexColumn, content }) => {
+  addCard = ({ indexColumn, content }) => {
     this.state.boards[indexColumn].tasks.push({
       id: getRandomInt(1000),
       content: content
+    })
+    this.updateBoard(this.state.boards)
+  }
+
+  addBoard = ({ name }) => {
+    this.state.boards.push({
+      id: this.state.boards.length + 1,
+      name: name,
+      tasks: []
     })
     this.updateBoard(this.state.boards)
   }
@@ -200,7 +202,7 @@ class Board extends React.Component {
       <WrapBoard>
         <NotificationContainer />
         {this.renderListBoards()}
-        {this.renderAddBoard()}
+        <AddBoard addBoard={({ name }) => this.addBoard({ name })}/>
       </WrapBoard>
     )
   }

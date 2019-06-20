@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { NotificationManager } from 'react-notifications';
-import { TButton } from '../common/'
+import { TButton } from '../common'
 
-function AddTask ({ addTask }) {
+function AddCard ({ addCard }) {
   const [newTask, updateNewTask] = useState('')
   const [isAdd, updateIsAdd] = useState(false)
 
@@ -17,7 +17,7 @@ function AddTask ({ addTask }) {
       NotificationManager.error('Input invalid')
     } else {
       const col = event.target.closest('.col')
-      addTask({
+      addCard({
         indexColumn: col.dataset.list,
         content: newTask
       })
@@ -94,4 +94,4 @@ const WrapForm = styled.form`
   }
 `
 
-export default AddTask
+export default AddCard
