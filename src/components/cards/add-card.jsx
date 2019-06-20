@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { NotificationManager } from 'react-notifications';
+import { validateInput } from '../../utils'
 import { TButton } from '../common'
 
 function AddCard ({ addCard }) {
@@ -13,9 +13,7 @@ function AddCard ({ addCard }) {
 
   const addMoreTask = (event) => {
     event.preventDefault();
-    if (!newTask) {
-      NotificationManager.error('Input invalid')
-    } else {
+    if (validateInput(newTask)) {
       const col = event.target.closest('.col')
       addCard({
         indexColumn: col.dataset.list,

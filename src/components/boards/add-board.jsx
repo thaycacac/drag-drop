@@ -13,7 +13,7 @@ function AddBoard ({ addBoard }) {
 
   const addMoreBoard = (event) => {
     event.preventDefault();
-    if (validateInput) {
+    if (validateInput(newBoard)) {
       addBoard({
         name: newBoard,
       })
