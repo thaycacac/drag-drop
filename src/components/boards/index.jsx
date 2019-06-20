@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { NotificationContainer } from 'react-notifications'
 import Task from '../tasks/task'
 import AddTask from '../tasks/add-task'
 import { getRandomInt } from '../../utils'
@@ -197,6 +198,7 @@ class Board extends React.Component {
   render() {
     return (
       <WrapBoard>
+        <NotificationContainer />
         {this.renderListBoards()}
         {this.renderAddBoard()}
       </WrapBoard>

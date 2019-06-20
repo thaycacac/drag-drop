@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import { NotificationManager } from 'react-notifications';
 import { TButton } from '../common/'
 
 function AddTask ({ addTask }) {
@@ -12,13 +13,17 @@ function AddTask ({ addTask }) {
 
   const addMoreTask = (event) => {
     event.preventDefault();
-    const col = event.target.closest('.col')
-    addTask({
-      indexColumn: col.dataset.list,
-      content: newTask
-    })
-    updateNewTask('')
-    updateIsAdd(false)
+    if (!newTask) {
+      NotificationManager.error('Input invalid')
+    } else {
+      const col = event.target.closest('.col')
+      addTask({
+        indexColumn: col.dataset.list,
+        content: newTask
+      })
+      updateNewTask('')
+      updateIsAdd(false)
+    }
   }
 
   return (
