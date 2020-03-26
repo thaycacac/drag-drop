@@ -1,1 +1,1 @@
-export { default as TButton } from './button' 
+export { default as TButton } from "./button";

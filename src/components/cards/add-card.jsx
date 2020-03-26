@@ -1,52 +1,48 @@
-import React, { useState } from 'react'
-import styled from 'styled-components'
-import { validateInput } from '../../utils'
-import { TButton } from '../common'
+import React, { useState } from "react";
+import styled from "styled-components";
+import { validateInput } from "../../utils";
+import { TButton } from "../common";
 
-function AddCard ({ addCard }) {
-  const [newTask, updateNewTask] = useState('')
-  const [isAdd, updateIsAdd] = useState(false)
+function AddCard({ addCard }) {
+  const [newTask, updateNewTask] = useState("");
+  const [isAdd, updateIsAdd] = useState(false);
 
   const showAdd = () => {
-    updateIsAdd(!isAdd)
-  }
+    updateIsAdd(!isAdd);
+  };
 
-  const addMoreTask = (event) => {
+  const addMoreTask = event => {
     event.preventDefault();
     if (validateInput(newTask)) {
-      const col = event.target.closest('.col')
+      const col = event.target.closest(".col");
       addCard({
         indexColumn: col.dataset.list,
         content: newTask
-      })
-      updateNewTask('')
-      updateIsAdd(false)
+      });
+      updateNewTask("");
+      updateIsAdd(false);
     }
-  }
+  };
 
-  return (
-    !isAdd ? (
-      <WrapButtonAdd onClick={() => showAdd()}>
-        <i className="fas fa-plus-circle icon" />
-        Add Card
-      </WrapButtonAdd>
-    ) : (
-        <WrapForm
-        onSubmit={(event) => addMoreTask(event)}>
-        <input
-          className="input-card"
-          type="text"
-          placeholder="Enter a title for this card..."
-          onChange={(event) => updateNewTask(event.target.value)}
-          />
-          <div className="wrap-button">
-            <TButton primary>Add Card</TButton>
-            <i className="far fa-times-circle icon"
-              onClick={() => showAdd()} />
-          </div>
-      </WrapForm>
-    )
-  )
+  return !isAdd ? (
+    <WrapButtonAdd onClick={() => showAdd()}>
+      <i className="fas fa-plus-circle icon" />
+      Add Card
+    </WrapButtonAdd>
+  ) : (
+    <WrapForm onSubmit={event => addMoreTask(event)}>
+      <input
+        className="input-card"
+        type="text"
+        placeholder="Enter a title for this card..."
+        onChange={event => updateNewTask(event.target.value)}
+      />
+      <div className="wrap-button">
+        <TButton primary>Add Card</TButton>
+        <i className="far fa-times-circle icon" onClick={() => showAdd()} />
+      </div>
+    </WrapForm>
+  );
 }
 
 const WrapButtonAdd = styled.div`
@@ -62,7 +58,7 @@ const WrapButtonAdd = styled.div`
   .icon {
     margin-right: 5px;
   }
-`
+`;
 
 const WrapForm = styled.form`
   .input-card {
@@ -76,7 +72,7 @@ const WrapForm = styled.form`
     margin-bottom: 10px;
     vertical-align: text-top;
     &:focus {
-      outline:none;
+      outline: none;
     }
   }
   .wrap-button {
@@ -90,6 +86,6 @@ const WrapForm = styled.form`
       margin-left: 5px;
     }
   }
-`
+`;
 
-export default AddCard
+export default AddCard;
